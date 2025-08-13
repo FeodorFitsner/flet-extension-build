@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+env:
+  FLET_CLI_NO_RICH_OUTPUT: "1"
+
 jobs:
   setup-uv-and-flet:
     # windows-2022 includes Visual Studio 2022 build tools
