@@ -5,23 +5,30 @@ on:
   pull_request:
 
 env:
+  PYTHON_VERSION: "3.12"
+  FLUTTER_VERSION: "3.29.2"
   PYTHONUTF8: "1"
   FLET_CLI_NO_RICH_OUTPUT: "1"
 
 jobs:
-  setup-uv-and-flet:
-    # windows-2022 includes Visual Studio 2022 build tools
+  build-extension-sample:
     runs-on: windows-2022
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # (Optional) Pick a specific Python; uv will use whatever is default if you skip this
-      - name: Setup Python 3.12
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Python ${{ env.FLUTTER_VERSION }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.FLUTTER_VERSION }}
 
       - name: Install uv
         shell: pwsh
