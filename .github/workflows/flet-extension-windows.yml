@@ -51,7 +51,7 @@ jobs:
       - name: Create Flet extension project
         shell: pwsh
         run: |
-          uv run flet create --template extension --template-ref 0.28.3-fix --project-name flet-spinkit
+          uv run flet create --template extension --project-name flet-spinkit
           Get-ChildItem -Path . -Force
 
       - name: Build extension
@@ -63,8 +63,7 @@ jobs:
       - name: Upload build/windows as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: flet-spinkit-windows-${{ github.run_number }}
-          path: build/windows/**
+          name: flet-spinkit-example-windows-${{ github.run_number }}
+          path: examples/flet_spinkit_example/build/windows/**
           if-no-files-found: error
-          retention-days: 14
           compression-level: 6
