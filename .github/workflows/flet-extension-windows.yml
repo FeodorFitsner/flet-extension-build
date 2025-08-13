@@ -42,7 +42,7 @@ jobs:
           uv pip install "flet[all]"
           uv pip list
 
-      - name: Verify flet version
+      - name: Verify Flet version
         run: |
           uv run flet --version
 
