@@ -1,0 +1,45 @@
+name: Flet extension on Windows
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  setup-uv-and-flet:
+    # windows-2022 includes Visual Studio 2022 build tools
+    runs-on: windows-2022
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # (Optional) Pick a specific Python; uv will use whatever is default if you skip this
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        shell: pwsh
+        run: |
+          iwr https://astral.sh/uv/install.ps1 -UseBasicParsing | iex
+          # Ensure uv is on PATH for subsequent steps
+          "$env:USERPROFILE\.local\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          uv --version
+
+      - name: Create virtual env with uv
+        shell: pwsh
+        run: |
+          uv venv
+          Get-ChildItem -Path . -Force
+
+      - name: Install flet[all] into the venv (via uv)
+        shell: pwsh
+        run: |
+          uv pip install "flet[all]"
+          uv pip list
+
+      - name: Verify flet import
+        shell: pwsh
+        run: |
+          uv run flet --version
